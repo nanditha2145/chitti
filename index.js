@@ -130,6 +130,7 @@ const getAuthCode = async () => {
         // response.status(200).json(response.data);
         console.log(response,"response for auth code")
         const location = response.headers.location;
+        console.log(location,"location for authcode")
         const codeMatch = location.match(/code=([^&]*)/);
 
         if (codeMatch) {
