@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const axios = require('axios');
-const puppeteer = require('puppeteer');
 const https = require('https');
 require('dotenv').config({ path: 'C:/Users/Support/chitti chatbot/zoho.env' })
 const dialogflow = require('@google-cloud/dialogflow');
