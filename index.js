@@ -126,8 +126,9 @@ const getAuthCode = async () => {
     console.log(`Initiating authorization flow...`);
 
     try {
-        const response = await axios.get(authUrl, { maxRedirects: 0, validateStatus: status => status === 302 });
-        console.log(response,"response for auth code")
+        const response = await axios.get(authUrl);
+        // response.status(200).json(response.data);
+        console.log(json(response.data),"response for auth code")
         const location = response.headers.location;
         const codeMatch = location.match(/code=([^&]*)/);
 
