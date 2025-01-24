@@ -51,7 +51,7 @@ let refresh_token = ''; // Will hold the refresh token after authorization
 //     "expires_in": 3600
 // }
 
-app.get('/call', (req, res) => {
+app.get('/', (req, res) => {
     res.send(`
         <!DOCTYPE html>
         <html lang="en">
