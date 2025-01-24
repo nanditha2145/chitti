@@ -125,40 +125,30 @@ app.get('/callback', (req, res) => {
 const getAuthCode = async () => {
     const authUrl = `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoPeople.Leave.ALL&client_id=${ZOHO_CLIENT_ID}&response_type=code&access_type=offline&redirect_uri=${REDIRECT_URI}`;
     console.log(`Initiating authorization flow...`);
-
+const loginUrl='https://accounts.zoho.com/signin'
     try {
-        // const response = await axios.get(authUrl,{ maxRedirects: 0, validateStatus: status => status === 302 });
-        // // response.status(200).json(response.data);
-        // console.log(response,"response for auth code")
-        // const location = response.headers.location;
-        // console.log(location,"location for authcode")
-        // const codeMatch = location.match(/code=([^&]*)/);
+        const loginResponse = await axios.post(loginUrl, {
+            username: 'vijay.adepu@techdemocracy.com',
+            password: 'Tcd$3698',
+        });
 
-        // console.log(codeMatch,"location for authcode")
-const browser = await puppeteer.launch({ headless: true });
-    const page = await browser.newPage();
+        if (loginResponse.status === 200) {
+            console.log('Logged in successfully.');
+        const response = await axios.get(authUrl,{ maxRedirects: 0, validateStatus: status => status === 302 });
+        // response.status(200).json(response.data);
+        console.log(response,"response for auth code")
+        const location = response.headers.location;
+        console.log(location,"location for authcode")
+        const codeMatch = new URLSearchParams(location).get('code');
 
-    await page.goto(authUrl);
-
-    // Fill out login form (adjust selectors as needed)
-    await page.type('#login_id', 'vijay.adepu@techdemocracy.com'); // Replace with your email
-    await page.click('#nextbtn'); // Click next button
-    await page.waitForSelector('#password'); // Wait for password field
-    await page.type('#password', '#Tcd$3698'); // Replace with your password
-    await page.click('#nextbtn'); // Submit the form
-
-    // Wait for the redirect
-    await page.waitForNavigation();
-
-    // Extract the redirect URL
-    const redirectUrl = page.url();
-        const codeMatch =redirectUrl.match(/code=([^&]*)/)
+        console.log(codeMatch,"location for authcode")
         if (codeMatch) {
-            authCode = codeMatch[1];
+            authCode = codeMatch;
             console.log('Authorization Code:', authCode);
             await exchangeAuthorizationCode();
         } else {
             throw new Error('Authorization code not found in the redirect response.');
+        }
         }
     } catch (error) {
         console.error('Error during authorization automation:', error.message);
