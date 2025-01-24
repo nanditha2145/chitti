@@ -145,10 +145,9 @@ const getAuthCode = async () => {
     }
 }
 const exchangeAuthorizationCode = async () => {
-    // if(!authCode){
-    //     await getAuthCode();
-    // }
-    authCode="1000.47a4fa6148da43781bb64c508942ba41.c79dc142660d94eabc76e7af88c3fd15"
+    if(!authCode){
+        await getAuthCode();
+    }
     const url = 'https://accounts.zoho.com/oauth/v2/token';
     const payload = new URLSearchParams({
         grant_type: 'authorization_code',
