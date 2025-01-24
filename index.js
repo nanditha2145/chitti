@@ -307,7 +307,7 @@ async function getLeaveBalance(session) {
             // res.json({ balance: response.data });
         } catch (error) {
             console.error('Error fetching leave balance:', error.response?.data || error.message);
-            res.status(500).json({ error: 'Failed to fetch leave balance from Zoho.' });
+            response.status(500).json({ error: 'Failed to fetch leave balance from Zoho.' });
         }
     
     // return '12 days'; // Replace with actual API call
