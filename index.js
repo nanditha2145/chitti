@@ -300,8 +300,8 @@ async function getLeaveBalance(session) {
             });
     
             // Return the relevant part of the response
-            console.log(json(response.data), "response from the api")
-            json(response.data);
+            // console.log(json(response.data), "response from the api")
+            // json(response.data);
             
             console.log(response.data, "final response")
             // res.json({ balance: response.data });
