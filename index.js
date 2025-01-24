@@ -258,7 +258,7 @@ app.post('/webhook', async (req, res) => {
             const leaveBalance = await getLeaveBalance();
             res.json({ fulfillmentText: `Your leave balance is ${leaveBalance}` })
             // const leaveBalance = await getLeaveBalance(req.body.session);
-            // res.json({ fulfillmentText: `Your leave balance is ${leaveBalance}` });
+            // res.json({ fulfillmentText: `Your unpaid leave balance is ${leaveBalance.report.271501000007316876.totals.unpaidBalance}` });
             break;
 
         case 'Apply Leave':
