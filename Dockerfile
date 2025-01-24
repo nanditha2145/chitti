@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/playwright:v1.21.0-focal
 
 # Set the working directory
 WORKDIR /app
-
+RUN npx playwright install
 # Install additional dependencies for Chromium
 RUN apt-get update && apt-get install -y \
     wget \
