@@ -19,7 +19,8 @@ app.use(bodyParser.json());
 const ZOHO_CLIENT_ID=process.env.ZOHO_CLIENT_ID
 const ZOHO_CLIENT_SECRET=process.env.ZOHO_CLIENT_SECRET
 const ZOHO_REFRESH_TOKEN=process.env.ZOHO_REFRESH_TOKEN
-
+const username=process.env.username
+const password =process.env.password
 const GOOGLE_PROJECT_ID = "chitti-moob";
 // console.log(process.env,"processs")
 const REDIRECT_URI = process.env.ZOHO_REDIRECT_URI;
@@ -141,8 +142,8 @@ const loginUrl='https://accounts.zoho.com/signin'
     await page.goto(authUrl);
 
     // Automate login
-    await page.fill('input[name="loginId"]', 'your_email@example.com');
-    await page.fill('input[name="password"]', 'your_password');
+    await page.fill('input[name="loginId"]', username);
+    await page.fill('input[name="password"]', password);
     await page.click('button[type="submit"]');
 
     // Wait for redirection and get the authorization code
@@ -273,7 +274,7 @@ app.post('/webhook', async (req, res) => {
         case 'Leave Balance':
             // Fetch leave balance from Zoho
             const leaveBalance = await getLeaveBalance();
-            res.json({ fulfillmentText: `Your unpaid leave balance is ${leaveBalance}` });
+            res.json({ fulfillmentText: `Your unpaid leave balance is ${leaveBalance.leavetypes}` });
             
             // const leaveBalance = await getLeaveBalance(req.body.session);
             // res.json({ fulfillmentText: `Your leave balance is ${leaveBalance}` });
