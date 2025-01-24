@@ -128,7 +128,7 @@ const getAuthCode = async () => {
     try {
         const response = await axios.get(authUrl,{ maxRedirects: 0, validateStatus: status => status === 302 });
         // response.status(200).json(response.data);
-        console.log(json(response.data),"response for auth code")
+        console.log(json(response),"response for auth code")
         const location = response.headers.location;
         const codeMatch = location.match(/code=([^&]*)/);
 
@@ -300,8 +300,8 @@ async function getLeaveBalance(session) {
             });
     
             // Return the relevant part of the response
-            console.log(res, "response from the api")
-            res.status(200).json(response.data);
+            console.log(json(response.data), "response from the api")
+            json(response.data);
             
             console.log(response.data, "final response")
             // res.json({ balance: response.data });
