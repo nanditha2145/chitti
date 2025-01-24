@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const axios = require('axios');
+const puppeteer = require('puppeteer');
 const https = require('https');
 require('dotenv').config({ path: 'C:/Users/Support/chitti chatbot/zoho.env' })
 const dialogflow = require('@google-cloud/dialogflow');
@@ -126,14 +127,32 @@ const getAuthCode = async () => {
     console.log(`Initiating authorization flow...`);
 
     try {
-        const response = await axios.get(authUrl,{ maxRedirects: 0, validateStatus: status => status === 302 });
-        // response.status(200).json(response.data);
-        console.log(response,"response for auth code")
-        const location = response.headers.location;
-        console.log(location,"location for authcode")
-        const codeMatch = location.match(/code=([^&]*)/);
+        // const response = await axios.get(authUrl,{ maxRedirects: 0, validateStatus: status => status === 302 });
+        // // response.status(200).json(response.data);
+        // console.log(response,"response for auth code")
+        // const location = response.headers.location;
+        // console.log(location,"location for authcode")
+        // const codeMatch = location.match(/code=([^&]*)/);
 
-        console.log(codeMatch,"location for authcode")
+        // console.log(codeMatch,"location for authcode")
+const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
+
+    await page.goto(authUrl);
+
+    // Fill out login form (adjust selectors as needed)
+    await page.type('#login_id', 'vijay.adepu@techdemocracy.com'); // Replace with your email
+    await page.click('#nextbtn'); // Click next button
+    await page.waitForSelector('#password'); // Wait for password field
+    await page.type('#password', '#Tcd$3698'); // Replace with your password
+    await page.click('#nextbtn'); // Submit the form
+
+    // Wait for the redirect
+    await page.waitForNavigation();
+
+    // Extract the redirect URL
+    const redirectUrl = page.url();
+        const codeMatch =redirectUrl.match(/code=([^&]*)/)
         if (codeMatch) {
             authCode = codeMatch[1];
             console.log('Authorization Code:', authCode);
