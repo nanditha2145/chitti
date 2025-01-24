@@ -136,7 +136,7 @@ const loginUrl='https://accounts.zoho.com/signin'
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    const authUrl = `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoPeople.Leave.ALL&client_id=YOUR_CLIENT_ID&response_type=code&access_type=offline&redirect_uri=YOUR_REDIRECT_URI`;
+    // const authUrl = `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoPeople.Leave.ALL&client_id=YOUR_CLIENT_ID&response_type=code&access_type=offline&redirect_uri=YOUR_REDIRECT_URI`;
 
     // Navigate to the auth URL
     await page.goto(authUrl);
