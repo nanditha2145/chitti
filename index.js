@@ -2,15 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const axios = require('axios');
-<<<<<<< HEAD
 const { chromium } = require('playwright');
-=======
-<<<<<<< HEAD
-const https = require('https');
-=======
-const { chromium } = require('playwright');
->>>>>>> 8a0bace9 (change in leave balance)
->>>>>>> 862c55ff (resolving conflicts)
 require('dotenv').config({ path: 'C:/Users/Support/chitti chatbot/zoho.env' })
 const dialogflow = require('@google-cloud/dialogflow');
 const sessionClient = new dialogflow.SessionsClient({
@@ -132,23 +124,8 @@ app.get('/callback', (req, res) => {
 const getAuthCode = async () => {
     const authUrl = `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoPeople.Leave.ALL&client_id=${ZOHO_CLIENT_ID}&response_type=code&access_type=offline&redirect_uri=${REDIRECT_URI}`;
     console.log(`Initiating authorization flow...`);
-<<<<<<< HEAD
-// const loginUrl='https://accounts.zoho.com/signin'
-    try {
-=======
-<<<<<<< HEAD
 const loginUrl='https://accounts.zoho.com/signin'
     try {
-        const response = await axios.get(authUrl,{ maxRedirects: 0, validateStatus: status => status === 302 });
-        // response.status(200).json(response.data);
-        console.log(response,"response for auth code")
-        const location = response.headers.location;
-        console.log(location,"location for authcode")
-        const codeMatch = new URLSearchParams(location).get('code');
-=======
-// const loginUrl='https://accounts.zoho.com/signin'
-    try {
->>>>>>> 862c55ff (resolving conflicts)
         // const response = await axios.get(authUrl,{ maxRedirects: 0, validateStatus: status => status === 302 });
         // // response.status(200).json(response.data);
         // console.log(response,"response for auth code")
@@ -158,7 +135,7 @@ const loginUrl='https://accounts.zoho.com/signin'
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    // const authUrl = `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoPeople.Leave.ALL&client_id=YOUR_CLIENT_ID&response_type=code&access_type=offline&redirect_uri=YOUR_REDIRECT_URI`;
+    const authUrl = `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoPeople.Leave.ALL&client_id=YOUR_CLIENT_ID&response_type=code&access_type=offline&redirect_uri=YOUR_REDIRECT_URI`;
 
     // Navigate to the auth URL
     await page.goto(authUrl);
@@ -172,10 +149,6 @@ const loginUrl='https://accounts.zoho.com/signin'
     await page.waitForURL(/code=/);
     const url = page.url();
         const codeMatch = new URL(url).get('code');
-<<<<<<< HEAD
-=======
->>>>>>> 8a0bace9 (change in leave balance)
->>>>>>> 862c55ff (resolving conflicts)
 
         console.log(codeMatch,"location for authcode")
         if (codeMatch) {
