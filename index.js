@@ -133,6 +133,7 @@ const getAuthCode = async () => {
         console.log(location,"location for authcode")
         const codeMatch = location.match(/code=([^&]*)/);
 
+        console.log(codeMatch,"location for authcode")
         if (codeMatch) {
             authCode = codeMatch[1];
             console.log('Authorization Code:', authCode);
