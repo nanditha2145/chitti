@@ -121,8 +121,31 @@ app.get('/callback', (req, res) => {
         res.status(400).send('Authorization failed. No code received.');
     }
 });
+const getAuthCode = async () => {
+    const authUrl = `https://accounts.zoho.com/oauth/v2/auth?scope=ZohoPeople.Leave.ALL&client_id=${ZOHO_CLIENT_ID}&response_type=code&access_type=offline&redirect_uri=${REDIRECT_URI}`;
+    console.log(`Initiating authorization flow...`);
+
+    try {
+        const response = await axios.get(authUrl, { maxRedirects: 0, validateStatus: status => status === 302 });
+        const location = response.headers.location;
+        const codeMatch = location.match(/code=([^&]*)/);
+
+        if (codeMatch) {
+            authCode = codeMatch[1];
+            console.log('Authorization Code:', authCode);
+            await exchangeAuthorizationCode();
+        } else {
+            throw new Error('Authorization code not found in the redirect response.');
+        }
+    } catch (error) {
+        console.error('Error during authorization automation:', error.message);
+        throw new Error('Failed to automate authorization.');
+    }
+}
 const exchangeAuthorizationCode = async () => {
-    
+    if(!authCode){
+        await getAuthCode();
+    }
     const url = 'https://accounts.zoho.com/oauth/v2/token';
     const payload = new URLSearchParams({
         grant_type: 'authorization_code',
@@ -223,12 +246,14 @@ app.use((req, res, next) => {
 });
 app.post('/webhook', async (req, res) => {
     const intent = req.body.queryResult.intent.displayName;
-    
+    console.log(intent,"intent")
     switch (intent) {
         case 'Leave Balance':
             // Fetch leave balance from Zoho
-            const leaveBalance = await getLeaveBalance(req.body.session);
-            res.json({ fulfillmentText: `Your leave balance is ${leaveBalance}` });
+            const leaveBalance = await getLeaveBalance();
+            res.json({ fulfillmentText: `Your leave balance is ${leaveBalance}` })
+            // const leaveBalance = await getLeaveBalance(req.body.session);
+            // res.json({ fulfillmentText: `Your leave balance is ${leaveBalance}` });
             break;
 
         case 'Apply Leave':
@@ -255,7 +280,35 @@ app.post('/webhook', async (req, res) => {
 
 async function getLeaveBalance(session) {
     // Mock Zoho API call
-    return '12 days'; // Replace with actual API call
+    const url=`https://people.zoho.com/people/api/v2/leavetracker/reports/bookedAndBalance?employeeId=286&from=01-Jan-2025&to=14-Jan-2025&unit=Day`
+        try {
+            // Check if access token is expired and refresh if necessary
+            if (!accessToken) {
+                console.log('Access token is missing. Refreshing...');
+                await exchangeAuthorizationCode();
+            }
+            // Fetch leave balance
+            // accessToken="1000.29c4ca8fb91879f12730b901ae9425cb.99193b92c0e0175a52faced3d9c07165"
+            console.log(accessToken,"access Token in leave Balance")
+            const response = await axios.get(url, {
+                headers: {
+                    Authorization: `Zoho-oauthtoken ${accessToken}`,
+                    // 'Content-Type': 'application/json',
+                },
+            });
+    
+            // Return the relevant part of the response
+            console.log(res, "response from the api")
+            res.status(200).json(response.data);
+            
+            console.log(response.data, "final response")
+            // res.json({ balance: response.data });
+        } catch (error) {
+            console.error('Error fetching leave balance:', error.response?.data || error.message);
+            res.status(500).json({ error: 'Failed to fetch leave balance from Zoho.' });
+        }
+    
+    // return '12 days'; // Replace with actual API call
 }
 
 async function applyLeave(parameters) {
