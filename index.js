@@ -126,13 +126,6 @@ const getAuthCode = async () => {
     console.log(`Initiating authorization flow...`);
 const loginUrl='https://accounts.zoho.com/signin'
     try {
-        const loginResponse = await axios.post(loginUrl, {
-            username: 'vijay.adepu@techdemocracy.com',
-            password: 'Tcd$3698',
-        });
-
-        if (loginResponse.status === 200) {
-            console.log(loginResponse,'Logged in successfully.');
         const response = await axios.get(authUrl,{ maxRedirects: 0, validateStatus: status => status === 302 });
         // response.status(200).json(response.data);
         console.log(response,"response for auth code")
@@ -148,7 +141,7 @@ const loginUrl='https://accounts.zoho.com/signin'
         } else {
             throw new Error('Authorization code not found in the redirect response.');
         }
-        }
+        
     } catch (error) {
         console.error('Error during authorization automation:', error.message);
         throw new Error('Failed to automate authorization.');
