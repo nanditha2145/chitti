@@ -132,7 +132,7 @@ const loginUrl='https://accounts.zoho.com/signin'
         });
 
         if (loginResponse.status === 200) {
-            console.log('Logged in successfully.');
+            console.log(loginResponse,'Logged in successfully.');
         const response = await axios.get(authUrl,{ maxRedirects: 0, validateStatus: status => status === 302 });
         // response.status(200).json(response.data);
         console.log(response,"response for auth code")
