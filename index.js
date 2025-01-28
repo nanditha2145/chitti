@@ -127,10 +127,11 @@ const getAuthCode = async () => {
     console.log(`Initiating authorization flow...`);
 const loginUrl='https://accounts.zoho.com/signin'
     try {
+        
         const response = await axios.get(authUrl,{ maxRedirects: 0, validateStatus: status => status === 302 });
         // response.status(200).json(response.data);
         console.log(response,"response for auth code")
-        const location = response.headers.location;
+        const location = response.headers;
         console.log(location,"location for authcode")
     //     const browser = await chromium.launch({ headless: true });
     // const context = await browser.newContext();
