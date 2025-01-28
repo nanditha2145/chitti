@@ -275,7 +275,7 @@ app.post('/webhook', async (req, res) => {
         case 'Leave Balance':
             // Fetch leave balance from Zoho
             const leaveBalance = await getLeaveBalance();
-            res.json({ fulfillmentText: `Your unpaid leave balance is ${leaveBalance.leavetypes}` });
+            res.json({ fulfillmentText: `Your unpaid leave balance is ${leaveBalance}` });
             
             // const leaveBalance = await getLeaveBalance(req.body.session);
             // res.json({ fulfillmentText: `Your leave balance is ${leaveBalance}` });
