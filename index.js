@@ -14,6 +14,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+var ZCRMRestClient = require('zcrmsdk')
 // const ZOHO_API_BASE = 'https://accounts.zoho.com/oauth/v2';
 // const ZOHO_API_KEY = '1000.9cff4f1075a27003a25290eabcf5173b.0300a01c5a4cae8c0b6974df37c9b357'; // Replace with your actual Zoho API Key
 const ZOHO_CLIENT_ID=process.env.ZOHO_CLIENT_ID
@@ -330,7 +331,7 @@ async function getLeaveBalance(session) {
             // res.json({ balance: response.data });
         } catch (error) {
             console.error('Error fetching leave balance:', error.response?.data || error.message);
-            response.status(500).json({ error: 'Failed to fetch leave balance from Zoho.' });
+            res.status(500).json({ error: 'Failed to fetch leave balance from Zoho.' });
         }
     
     // return '12 days'; // Replace with actual API call
